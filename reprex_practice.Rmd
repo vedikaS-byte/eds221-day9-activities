@@ -43,7 +43,180 @@ mack_creek_lengths <- mack_creek_vertebrates %>%
   summarize(mean_length_cm = mean(length1, na.rm = TRUE),
             sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
   ungroup()
+
+
+# create new subset of dataframe for issue
+library(tidyverse)
+library(janitor)
+mack_creek_lengths_subset <- mack_creek_vertebrates %>% 
+  slice_head(n = 10)
+
+datapasta::df_paste(mack_creek_lengths_subset)
+
+mack_creek_lengths_subset <- data.frame(
+  stringsAsFactors = FALSE,
+                                          DBCODE = c("AS006","AS006","AS006",
+                                                     "AS006","AS006","AS006",
+                                                     "AS006","AS006","AS006",
+                                                     "AS006"),
+                                          ENTITY = c(1,1,1,1,1,1,1,1,1,
+                                                     1),
+                                            YEAR = c(1987,1987,1987,1987,
+                                                     1987,1987,1987,1987,1987,
+                                                     1987),
+                                        SITECODE = c("MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L","MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L"),
+                                         SECTION = c("CC","CC","CC","CC",
+                                                     "CC","CC","CC","CC","CC",
+                                                     "CC"),
+                                           REACH = c("L","L","L","L","L",
+                                                     "L","L","L","L","L"),
+                                            PASS = c(1,1,1,1,1,1,1,1,1,
+                                                     1),
+                                         UNITNUM = c(1,1,1,1,1,1,1,1,1,
+                                                     1),
+                                        UNITTYPE = c("R","R","R","R","R",
+                                                     "R","R","R","R","R"),
+                                      VERT_INDEX = c(1,2,3,4,5,6,7,8,9,
+                                                     10),
+                                       PITNUMBER = c(NA,NA,NA,NA,NA,NA,
+                                                     NA,NA,NA,NA),
+                                         SPECIES = c("ONCL","ONCL","ONCL",
+                                                     "ONCL","ONCL","ONCL",
+                                                     "ONCL","ONCL","ONCL","ONCL"),
+                                         LENGTH1 = c(58,61,89,58,93,86,
+                                                     107,131,103,117),
+                                         LENGTH2 = c(NA,NA,NA,NA,NA,NA,
+                                                     NA,NA,NA,NA),
+                                          WEIGHT = c(1.75,1.95,5.6,2.15,
+                                                     6.9,5.9,10.5,20.6,9.55,
+                                                     13),
+                                            CLIP = c("NONE","NONE","NONE",
+                                                     "NONE","NONE","NONE",
+                                                     "NONE","NONE","NONE","NONE"),
+                                      SAMPLEDATE = c("10/7/87","10/7/87",
+                                                     "10/7/87","10/7/87",
+                                                     "10/7/87","10/7/87","10/7/87",
+                                                     "10/7/87","10/7/87",
+                                                     "10/7/87"),
+                                           NOTES = c(NA,NA,NA,NA,NA,NA,
+                                                     NA,NA,NA,NA)
+                              )
+
+
+
+mack_creek_lengths_subset %>% 
+ clean_names() %>% 
+  select(year:sampledate) %>%
+  filter(section == "CC") %>%
+  mutate(across(where(is.character, tolower))) %>%
+  drop_na(species) %>%
+  group_by(species) %>%
+  summarize(mean_length_cm = mean(length1, na.rm = TRUE),
+            sd_length_cm = sd(length1, na.rm = TRUE)) %>%
+  ungroup()
+
+
+
+
+
 ```
+
+
+reprex here: 
+```{r}
+library(tidyverse)
+library(janitor)
+#> 
+#> Attaching package: 'janitor'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     chisq.test, fisher.test
+mack_creek_lengths_subset <- mack_creek_vertebrates %>% 
+  slice_head(n = 10)
+#> Error: object 'mack_creek_vertebrates' not found
+
+datapasta::df_paste(mack_creek_lengths_subset)
+#> Error: object 'mack_creek_lengths_subset' not found
+
+mack_creek_lengths_subset <- data.frame(
+  stringsAsFactors = FALSE,
+                                          DBCODE = c("AS006","AS006","AS006",
+                                                     "AS006","AS006","AS006",
+                                                     "AS006","AS006","AS006",
+                                                     "AS006"),
+                                          ENTITY = c(1,1,1,1,1,1,1,1,1,
+                                                     1),
+                                            YEAR = c(1987,1987,1987,1987,
+                                                     1987,1987,1987,1987,1987,
+                                                     1987),
+                                        SITECODE = c("MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L","MACKCC-L","MACKCC-L",
+                                                     "MACKCC-L"),
+                                         SECTION = c("CC","CC","CC","CC",
+                                                     "CC","CC","CC","CC","CC",
+                                                     "CC"),
+                                           REACH = c("L","L","L","L","L",
+                                                     "L","L","L","L","L"),
+                                            PASS = c(1,1,1,1,1,1,1,1,1,
+                                                     1),
+                                         UNITNUM = c(1,1,1,1,1,1,1,1,1,
+                                                     1),
+                                        UNITTYPE = c("R","R","R","R","R",
+                                                     "R","R","R","R","R"),
+                                      VERT_INDEX = c(1,2,3,4,5,6,7,8,9,
+                                                     10),
+                                       PITNUMBER = c(NA,NA,NA,NA,NA,NA,
+                                                     NA,NA,NA,NA),
+                                         SPECIES = c("ONCL","ONCL","ONCL",
+                                                     "ONCL","ONCL","ONCL",
+                                                     "ONCL","ONCL","ONCL","ONCL"),
+                                         LENGTH1 = c(58,61,89,58,93,86,
+                                                     107,131,103,117),
+                                         LENGTH2 = c(NA,NA,NA,NA,NA,NA,
+                                                     NA,NA,NA,NA),
+                                          WEIGHT = c(1.75,1.95,5.6,2.15,
+                                                     6.9,5.9,10.5,20.6,9.55,
+                                                     13),
+                                            CLIP = c("NONE","NONE","NONE",
+                                                     "NONE","NONE","NONE",
+                                                     "NONE","NONE","NONE","NONE"),
+                                      SAMPLEDATE = c("10/7/87","10/7/87",
+                                                     "10/7/87","10/7/87",
+                                                     "10/7/87","10/7/87","10/7/87",
+                                                     "10/7/87","10/7/87",
+                                                     "10/7/87"),
+                                           NOTES = c(NA,NA,NA,NA,NA,NA,
+                                                     NA,NA,NA,NA)
+                              )
+
+
+
+mack_creek_lengths_subset %>% 
+ clean_names() %>% 
+  select(year:sampledate) %>%
+  filter(section == "CC") %>%
+  mutate(across(where(is.character, tolower))) %>%
+  drop_na(species) %>%
+  group_by(species) %>%
+  summarize(mean_length_cm = mean(length1, na.rm = TRUE),
+            sd_length_cm = sd(length1, na.rm = TRUE)) %>%
+  ungroup()
+#> Error in `mutate()`:
+#> ℹ In argument: `across(where(is.character, tolower))`.
+#> Caused by error in `across()`:
+#> ℹ In argument: `where(is.character, tolower)`.
+#> Caused by error in `where()`:
+#> ! unused argument (tolower)
+```
+
+
+
 
 ### reprex 2
 
@@ -59,6 +232,194 @@ mack_creek_vertebrates %>%
          theme_minimal() +
          labs(x = "Cutthroat trout length (cm)",
               y = "Weight (g)")
+#_________________________
+library(tidyverse)
+library(janitor)
+
+mack_creek_vertebrates_subset <-  mack_creek_vertebrates %>% 
+  clean_names() %>% 
+  filter(species == "ONCL") %>% slice_head(n = 10)
+
+datapasta::df_paste(mack_creek_vertebrates_subset)
+
+
+
+mack_creek_vertebrates_subset <-  data.frame(
+  stringsAsFactors = FALSE,
+                                              dbcode = c("AS006",
+                                                         "AS006","AS006",
+                                                         "AS006","AS006","AS006",
+                                                         "AS006","AS006",
+                                                         "AS006","AS006"),
+                                              entity = c(1,1,1,
+                                                         1,1,1,1,1,1,1),
+                                                year = c(1987,
+                                                         1987,1987,1987,1987,
+                                                         1987,1987,1987,1987,
+                                                         1987),
+                                            sitecode = c("MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L"),
+                                             section = c("CC",
+                                                         "CC","CC","CC","CC",
+                                                         "CC","CC","CC","CC",
+                                                         "CC"),
+                                               reach = c("L","L",
+                                                         "L","L","L","L",
+                                                         "L","L","L","L"),
+                                                pass = c(1,1,1,
+                                                         1,1,1,1,1,1,1),
+                                             unitnum = c(1,1,1,
+                                                         1,1,1,1,1,1,1),
+                                            unittype = c("R","R",
+                                                         "R","R","R","R",
+                                                         "R","R","R","R"),
+                                          vert_index = c(1,2,3,
+                                                         4,5,6,7,8,9,10),
+                                           pitnumber = c(NA,NA,
+                                                         NA,NA,NA,NA,NA,NA,
+                                                         NA,NA),
+                                             species = c("ONCL",
+                                                         "ONCL","ONCL","ONCL",
+                                                         "ONCL","ONCL","ONCL",
+                                                         "ONCL","ONCL","ONCL"),
+                                             length1 = c(58,61,
+                                                         89,58,93,86,107,131,
+                                                         103,117),
+                                             length2 = c(NA,NA,
+                                                         NA,NA,NA,NA,NA,NA,
+                                                         NA,NA),
+                                              weight = c(1.75,
+                                                         1.95,5.6,2.15,6.9,5.9,
+                                                         10.5,20.6,9.55,13),
+                                                clip = c("NONE",
+                                                         "NONE","NONE","NONE",
+                                                         "NONE","NONE","NONE",
+                                                         "NONE","NONE","NONE"),
+                                          sampledate = c("10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87"),
+                                               notes = c(NA,NA,
+                                                         NA,NA,NA,NA,NA,NA,
+                                                         NA,NA)
+                                  )
+
+
+mack_creek_vertebrates_subset %>% ggplot(aes(x = length1, y = weight)) +
+         geom_point(aes(shape = 12), color = "purple") +
+         theme_minimal() +
+         labs(x = "Cutthroat trout length (cm)",
+              y = "Weight (g)")
+
 ```
+
+
+#### second reprex here: 
+```{r}
+library(tidyverse)
+library(janitor)
+#> 
+#> Attaching package: 'janitor'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     chisq.test, fisher.test
+
+mack_creek_vertebrates_subset <-  mack_creek_vertebrates %>% 
+  clean_names() %>% 
+  filter(species == "ONCL") %>% slice_head(n = 10)
+#> Error: object 'mack_creek_vertebrates' not found
+
+datapasta::df_paste(mack_creek_vertebrates_subset)
+#> Error: object 'mack_creek_vertebrates_subset' not found
+
+
+
+mack_creek_vertebrates_subset <-  data.frame(
+  stringsAsFactors = FALSE,
+                                              dbcode = c("AS006",
+                                                         "AS006","AS006",
+                                                         "AS006","AS006","AS006",
+                                                         "AS006","AS006",
+                                                         "AS006","AS006"),
+                                              entity = c(1,1,1,
+                                                         1,1,1,1,1,1,1),
+                                                year = c(1987,
+                                                         1987,1987,1987,1987,
+                                                         1987,1987,1987,1987,
+                                                         1987),
+                                            sitecode = c("MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L",
+                                                         "MACKCC-L","MACKCC-L"),
+                                             section = c("CC",
+                                                         "CC","CC","CC","CC",
+                                                         "CC","CC","CC","CC",
+                                                         "CC"),
+                                               reach = c("L","L",
+                                                         "L","L","L","L",
+                                                         "L","L","L","L"),
+                                                pass = c(1,1,1,
+                                                         1,1,1,1,1,1,1),
+                                             unitnum = c(1,1,1,
+                                                         1,1,1,1,1,1,1),
+                                            unittype = c("R","R",
+                                                         "R","R","R","R",
+                                                         "R","R","R","R"),
+                                          vert_index = c(1,2,3,
+                                                         4,5,6,7,8,9,10),
+                                           pitnumber = c(NA,NA,
+                                                         NA,NA,NA,NA,NA,NA,
+                                                         NA,NA),
+                                             species = c("ONCL",
+                                                         "ONCL","ONCL","ONCL",
+                                                         "ONCL","ONCL","ONCL",
+                                                         "ONCL","ONCL","ONCL"),
+                                             length1 = c(58,61,
+                                                         89,58,93,86,107,131,
+                                                         103,117),
+                                             length2 = c(NA,NA,
+                                                         NA,NA,NA,NA,NA,NA,
+                                                         NA,NA),
+                                              weight = c(1.75,
+                                                         1.95,5.6,2.15,6.9,5.9,
+                                                         10.5,20.6,9.55,13),
+                                                clip = c("NONE",
+                                                         "NONE","NONE","NONE",
+                                                         "NONE","NONE","NONE",
+                                                         "NONE","NONE","NONE"),
+                                          sampledate = c("10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87","10/7/87",
+                                                         "10/7/87"),
+                                               notes = c(NA,NA,
+                                                         NA,NA,NA,NA,NA,NA,
+                                                         NA,NA)
+                                  )
+
+
+mack_creek_vertebrates_subset %>% ggplot(aes(x = length1, y = weight)) +
+         geom_point(aes(shape = 12), color = "purple") +
+         theme_minimal() +
+         labs(x = "Cutthroat trout length (cm)",
+              y = "Weight (g)")
+#> Error in `geom_point()`:
+#> ! Problem while computing aesthetics.
+#> ℹ Error occurred in the 1st layer.
+#> Caused by error in `scale_f()`:
+#> ! A continuous variable cannot be mapped to the shape aesthetic.
+#> ℹ Choose a different aesthetic or use `scale_shape_binned()`.
+```
+
+
+
+
 
 ## End
