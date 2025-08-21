@@ -12,17 +12,18 @@ library(here)
 library(janitor)
 ```
 
-Your job is to identify an error, then make a reproducible example that would help future you or someone else understand how to write the code correctly. In other words, your reprex code will *work* and offer a solution to the error thrown in each of the following examples. 
+Your job is to identify an error, then make a reproducible example that would help future you or someone else understand how to write the code correctly. In other words, your reprex code will *work* and offer a solution to the error thrown in each of the following examples.
 
-Data are in `AS00601.csv` (and read in correctly below as `mack_creek_vertebrates`). 
+Data are in `AS00601.csv` (and read in correctly below as `mack_creek_vertebrates`).
 
 Data package title: Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present
 
-**Citation:** Gregory, S.V. and I. Arismendi. 2020. Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/7c78d662e847cdbe33584add8f809165
+**Citation:** Gregory, S.V. and I. Arismendi. 2020. Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present ver 14. Environmental Data Initiative. <https://doi.org/10.6073/pasta/7c78d662e847cdbe33584add8f809165>
 
-### Read in the data 
+### Read in the data
 
-There are no problems here. 
+There are no problems here.
+
 ```{r}
 mack_creek_vertebrates <- read_csv(here("AS00601.csv"))
 ```
@@ -44,74 +45,67 @@ mack_creek_lengths <- mack_creek_vertebrates %>%
             sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
   ungroup()
 
+```
 
+```{r}
 # create new subset of dataframe for issue
 library(tidyverse)
 library(janitor)
 mack_creek_lengths_subset <- mack_creek_vertebrates %>% 
+  clean_names() %>% 
+  select(year:sampledate) %>% 
+  filter(section == "CC") %>%
   slice_head(n = 10)
 
 datapasta::df_paste(mack_creek_lengths_subset)
 
-mack_creek_lengths_subset <- data.frame(
+
+mack_creek_lengths_subset <-  data.frame(
   stringsAsFactors = FALSE,
-                                          DBCODE = c("AS006","AS006","AS006",
-                                                     "AS006","AS006","AS006",
-                                                     "AS006","AS006","AS006",
-                                                     "AS006"),
-                                          ENTITY = c(1,1,1,1,1,1,1,1,1,
-                                                     1),
-                                            YEAR = c(1987,1987,1987,1987,
+                                            year = c(1987,1987,1987,1987,
                                                      1987,1987,1987,1987,1987,
                                                      1987),
-                                        SITECODE = c("MACKCC-L","MACKCC-L",
+                                        sitecode = c("MACKCC-L","MACKCC-L",
                                                      "MACKCC-L","MACKCC-L",
                                                      "MACKCC-L","MACKCC-L",
                                                      "MACKCC-L","MACKCC-L","MACKCC-L",
                                                      "MACKCC-L"),
-                                         SECTION = c("CC","CC","CC","CC",
+                                         section = c("CC","CC","CC","CC",
                                                      "CC","CC","CC","CC","CC",
                                                      "CC"),
-                                           REACH = c("L","L","L","L","L",
+                                           reach = c("L","L","L","L","L",
                                                      "L","L","L","L","L"),
-                                            PASS = c(1,1,1,1,1,1,1,1,1,
+                                            pass = c(1,1,1,1,1,1,1,1,1,
                                                      1),
-                                         UNITNUM = c(1,1,1,1,1,1,1,1,1,
+                                         unitnum = c(1,1,1,1,1,1,1,1,1,
                                                      1),
-                                        UNITTYPE = c("R","R","R","R","R",
+                                        unittype = c("R","R","R","R","R",
                                                      "R","R","R","R","R"),
-                                      VERT_INDEX = c(1,2,3,4,5,6,7,8,9,
+                                      vert_index = c(1,2,3,4,5,6,7,8,9,
                                                      10),
-                                       PITNUMBER = c(NA,NA,NA,NA,NA,NA,
+                                       pitnumber = c(NA,NA,NA,NA,NA,NA,
                                                      NA,NA,NA,NA),
-                                         SPECIES = c("ONCL","ONCL","ONCL",
+                                         species = c("ONCL","ONCL","ONCL",
                                                      "ONCL","ONCL","ONCL",
                                                      "ONCL","ONCL","ONCL","ONCL"),
-                                         LENGTH1 = c(58,61,89,58,93,86,
+                                         length1 = c(58,61,89,58,93,86,
                                                      107,131,103,117),
-                                         LENGTH2 = c(NA,NA,NA,NA,NA,NA,
+                                         length2 = c(NA,NA,NA,NA,NA,NA,
                                                      NA,NA,NA,NA),
-                                          WEIGHT = c(1.75,1.95,5.6,2.15,
+                                          weight = c(1.75,1.95,5.6,2.15,
                                                      6.9,5.9,10.5,20.6,9.55,
                                                      13),
-                                            CLIP = c("NONE","NONE","NONE",
+                                            clip = c("NONE","NONE","NONE",
                                                      "NONE","NONE","NONE",
                                                      "NONE","NONE","NONE","NONE"),
-                                      SAMPLEDATE = c("10/7/87","10/7/87",
+                                      sampledate = c("10/7/87","10/7/87",
                                                      "10/7/87","10/7/87",
                                                      "10/7/87","10/7/87","10/7/87",
                                                      "10/7/87","10/7/87",
-                                                     "10/7/87"),
-                                           NOTES = c(NA,NA,NA,NA,NA,NA,
-                                                     NA,NA,NA,NA)
+                                                     "10/7/87")
                               )
 
-
-
-mack_creek_lengths_subset %>% 
- clean_names() %>% 
-  select(year:sampledate) %>%
-  filter(section == "CC") %>%
+mack_creek_lengths_subset %>%
   mutate(across(where(is.character, tolower))) %>%
   drop_na(species) %>%
   group_by(species) %>%
@@ -119,14 +113,10 @@ mack_creek_lengths_subset %>%
             sd_length_cm = sd(length1, na.rm = TRUE)) %>%
   ungroup()
 
-
-
-
-
 ```
 
+reprex output here:
 
-reprex here: 
 ```{r}
 library(tidyverse)
 library(janitor)
@@ -136,71 +126,62 @@ library(janitor)
 #> 
 #>     chisq.test, fisher.test
 mack_creek_lengths_subset <- mack_creek_vertebrates %>% 
+  clean_names() %>% 
+  select(year:sampledate) %>% 
+  filter(section == "CC") %>%
   slice_head(n = 10)
 #> Error: object 'mack_creek_vertebrates' not found
 
 datapasta::df_paste(mack_creek_lengths_subset)
 #> Error: object 'mack_creek_lengths_subset' not found
 
-mack_creek_lengths_subset <- data.frame(
+
+mack_creek_lengths_subset <-  data.frame(
   stringsAsFactors = FALSE,
-                                          DBCODE = c("AS006","AS006","AS006",
-                                                     "AS006","AS006","AS006",
-                                                     "AS006","AS006","AS006",
-                                                     "AS006"),
-                                          ENTITY = c(1,1,1,1,1,1,1,1,1,
-                                                     1),
-                                            YEAR = c(1987,1987,1987,1987,
+                                            year = c(1987,1987,1987,1987,
                                                      1987,1987,1987,1987,1987,
                                                      1987),
-                                        SITECODE = c("MACKCC-L","MACKCC-L",
+                                        sitecode = c("MACKCC-L","MACKCC-L",
                                                      "MACKCC-L","MACKCC-L",
                                                      "MACKCC-L","MACKCC-L",
                                                      "MACKCC-L","MACKCC-L","MACKCC-L",
                                                      "MACKCC-L"),
-                                         SECTION = c("CC","CC","CC","CC",
+                                         section = c("CC","CC","CC","CC",
                                                      "CC","CC","CC","CC","CC",
                                                      "CC"),
-                                           REACH = c("L","L","L","L","L",
+                                           reach = c("L","L","L","L","L",
                                                      "L","L","L","L","L"),
-                                            PASS = c(1,1,1,1,1,1,1,1,1,
+                                            pass = c(1,1,1,1,1,1,1,1,1,
                                                      1),
-                                         UNITNUM = c(1,1,1,1,1,1,1,1,1,
+                                         unitnum = c(1,1,1,1,1,1,1,1,1,
                                                      1),
-                                        UNITTYPE = c("R","R","R","R","R",
+                                        unittype = c("R","R","R","R","R",
                                                      "R","R","R","R","R"),
-                                      VERT_INDEX = c(1,2,3,4,5,6,7,8,9,
+                                      vert_index = c(1,2,3,4,5,6,7,8,9,
                                                      10),
-                                       PITNUMBER = c(NA,NA,NA,NA,NA,NA,
+                                       pitnumber = c(NA,NA,NA,NA,NA,NA,
                                                      NA,NA,NA,NA),
-                                         SPECIES = c("ONCL","ONCL","ONCL",
+                                         species = c("ONCL","ONCL","ONCL",
                                                      "ONCL","ONCL","ONCL",
                                                      "ONCL","ONCL","ONCL","ONCL"),
-                                         LENGTH1 = c(58,61,89,58,93,86,
+                                         length1 = c(58,61,89,58,93,86,
                                                      107,131,103,117),
-                                         LENGTH2 = c(NA,NA,NA,NA,NA,NA,
+                                         length2 = c(NA,NA,NA,NA,NA,NA,
                                                      NA,NA,NA,NA),
-                                          WEIGHT = c(1.75,1.95,5.6,2.15,
+                                          weight = c(1.75,1.95,5.6,2.15,
                                                      6.9,5.9,10.5,20.6,9.55,
                                                      13),
-                                            CLIP = c("NONE","NONE","NONE",
+                                            clip = c("NONE","NONE","NONE",
                                                      "NONE","NONE","NONE",
                                                      "NONE","NONE","NONE","NONE"),
-                                      SAMPLEDATE = c("10/7/87","10/7/87",
+                                      sampledate = c("10/7/87","10/7/87",
                                                      "10/7/87","10/7/87",
                                                      "10/7/87","10/7/87","10/7/87",
                                                      "10/7/87","10/7/87",
-                                                     "10/7/87"),
-                                           NOTES = c(NA,NA,NA,NA,NA,NA,
-                                                     NA,NA,NA,NA)
+                                                     "10/7/87")
                               )
 
-
-
-mack_creek_lengths_subset %>% 
- clean_names() %>% 
-  select(year:sampledate) %>%
-  filter(section == "CC") %>%
+mack_creek_lengths_subset %>%
   mutate(across(where(is.character, tolower))) %>%
   drop_na(species) %>%
   group_by(species) %>%
@@ -214,8 +195,6 @@ mack_creek_lengths_subset %>%
 #> Caused by error in `where()`:
 #> ! unused argument (tolower)
 ```
-
-
 
 
 ### reprex 2
@@ -232,6 +211,10 @@ mack_creek_vertebrates %>%
          theme_minimal() +
          labs(x = "Cutthroat trout length (cm)",
               y = "Weight (g)")
+
+```
+
+```{r}
 #_________________________
 library(tidyverse)
 library(janitor)
@@ -315,11 +298,10 @@ mack_creek_vertebrates_subset %>% ggplot(aes(x = length1, y = weight)) +
          theme_minimal() +
          labs(x = "Cutthroat trout length (cm)",
               y = "Weight (g)")
-
 ```
 
+#### second reprex here:
 
-#### second reprex here: 
 ```{r}
 library(tidyverse)
 library(janitor)
@@ -418,8 +400,6 @@ mack_creek_vertebrates_subset %>% ggplot(aes(x = length1, y = weight)) +
 #> ℹ Choose a different aesthetic or use `scale_shape_binned()`.
 ```
 
-
-
-
+<sup>Created on 2025-08-21 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup> \`\`\`
 
 ## End
